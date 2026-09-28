@@ -1,9 +1,10 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isSuperAdmin } from '@/lib/auth'
 import { updateSettingSchema, formatZodError } from '@/lib/validations'
 import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from '@/lib/response'
+
+export const dynamic = 'force-dynamic'
 
 // Key yang boleh diakses publik
 const PUBLIC_KEYS = ['hero_title', 'hero_subtitle', 'maintenance_mode']

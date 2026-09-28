@@ -1,9 +1,10 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
 import { updateGallerySchema, formatZodError } from '@/lib/validations'
 import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from '@/lib/response'
+
+export const dynamic = 'force-dynamic'
 
 type Params = { params: Promise<{ id: string }> }
 

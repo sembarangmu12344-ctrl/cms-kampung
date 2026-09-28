@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
@@ -7,6 +6,8 @@ import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from '
 import { createUniqueSlug } from '@/lib/slugify'
 import { generateExcerpt } from '@/lib/utils'
 import { ContentStatus } from '@prisma/client'
+
+export const dynamic = 'force-dynamic'
 
 type Params = { params: Promise<{ id: string }> }
 

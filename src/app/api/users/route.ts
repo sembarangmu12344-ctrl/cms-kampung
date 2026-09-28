@@ -1,10 +1,11 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isSuperAdmin } from '@/lib/auth'
 import { createUserSchema, formatZodError } from '@/lib/validations'
 import { ok, created, badRequest, unauthorized, forbidden, serverError, getPaginationParams, getPaginationMeta } from '@/lib/response'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

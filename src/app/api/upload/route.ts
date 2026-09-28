@@ -1,8 +1,9 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
 import { uploadFile } from '@/lib/upload'
 import { ok, badRequest, unauthorized, forbidden, serverError } from '@/lib/response'
+
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {

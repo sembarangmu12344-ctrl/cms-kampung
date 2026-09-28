@@ -1,9 +1,10 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
 import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from '@/lib/response'
 import { z } from 'zod'
+
+export const dynamic = 'force-dynamic'
 
 const updateEventSchema = z.object({
   title: z.string().min(3).max(200).optional(),
