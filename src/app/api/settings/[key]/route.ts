@@ -1,8 +1,4 @@
-/**
- * GET /api/settings/[key]  - Ambil setting by key (publik untuk beberapa key)
- * PUT /api/settings/[key]  - Update setting (super_admin)
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isSuperAdmin } from '@/lib/auth'

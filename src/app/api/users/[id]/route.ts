@@ -1,9 +1,4 @@
-/**
- * GET    /api/users/[id]
- * PUT    /api/users/[id]
- * DELETE /api/users/[id]
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'

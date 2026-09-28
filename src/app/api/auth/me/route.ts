@@ -1,7 +1,4 @@
-/**
- * GET /api/auth/me
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken } from '@/lib/auth'

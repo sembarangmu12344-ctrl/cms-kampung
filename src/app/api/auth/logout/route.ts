@@ -1,7 +1,4 @@
-/**
- * POST /api/auth/logout
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { removeAuthCookie } from '@/lib/auth'
 import { ok } from '@/lib/response'

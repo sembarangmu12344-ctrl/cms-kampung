@@ -1,8 +1,4 @@
-/**
- * POST /api/upload  - Upload file gambar (admin)
- * Mengembalikan URL file yang dapat digunakan
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
 import { uploadFile } from '@/lib/upload'

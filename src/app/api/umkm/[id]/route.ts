@@ -1,9 +1,4 @@
-/**
- * GET    /api/umkm/[id]
- * PUT    /api/umkm/[id]
- * DELETE /api/umkm/[id]
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'

@@ -9,6 +9,8 @@ import { signToken, setAuthCookie } from '@/lib/auth'
 import { loginSchema, formatZodError } from '@/lib/validations'
 import { ok, badRequest, unauthorized, serverError } from '@/lib/response'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()

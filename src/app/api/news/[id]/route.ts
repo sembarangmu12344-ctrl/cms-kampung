@@ -1,9 +1,4 @@
-/**
- * GET    /api/news/[id]  - Detail berita
- * PUT    /api/news/[id]  - Update berita (admin)
- * DELETE /api/news/[id]  - Hapus berita (admin)
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'

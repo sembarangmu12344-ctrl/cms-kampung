@@ -1,9 +1,4 @@
-/**
- * GET    /api/events/[id]
- * PUT    /api/events/[id]
- * DELETE /api/events/[id]
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'

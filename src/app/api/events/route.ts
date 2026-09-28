@@ -1,8 +1,4 @@
-/**
- * GET  /api/events  - List kegiatan (publik)
- * POST /api/events  - Tambah kegiatan (admin)
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'

@@ -1,8 +1,4 @@
-/**
- * POST   /api/umkm/[id]/photos          - Upload foto produk
- * DELETE /api/umkm/[id]/photos/[photoId] - Hapus foto produk
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'

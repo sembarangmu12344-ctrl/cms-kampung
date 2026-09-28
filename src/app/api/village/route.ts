@@ -1,8 +1,4 @@
-/**
- * GET /api/village  - Info kampung (publik)
- * PUT /api/village  - Update info (super_admin)
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 import { Prisma } from '@prisma/client'

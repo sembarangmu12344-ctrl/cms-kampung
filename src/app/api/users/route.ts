@@ -1,8 +1,4 @@
-/**
- * GET  /api/users  - List pengguna (super_admin)
- * POST /api/users  - Tambah pengguna baru (super_admin)
- */
-
+\nexport const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
