@@ -1,4 +1,4 @@
-\nexport const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { getTokenFromRequest, verifyToken, isAdmin } from '@/lib/auth'
 import { uploadFile } from '@/lib/upload'
