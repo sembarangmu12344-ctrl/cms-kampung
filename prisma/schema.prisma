@@ -1,0 +1,255 @@
+// ============================================================
+// CMS Kampung - Prisma Schema
+// Database: PostgreSQL
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  super_admin
+  admin
+  visitor
+}
+
+enum ContentStatus {
+  draft
+  published
+  archived
+}
+
+enum CategoryType {
+  news
+  umkm
+  gallery
+}
+
+// ============================================================
+// USERS
+// ============================================================
+
+model User {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(100)
+  email     String    @unique @db.VarChar(150)
+  password  String    @db.VarChar(255)
+  role      UserRole  @default(visitor)
+  avatarUrl String?   @map("avatar_url") @db.VarChar(500)
+  isActive  Boolean   @default(true) @map("is_active")
+  lastLogin DateTime? @map("last_login")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  news      News[]
+  umkm      Umkm[]
+  galleries Gallery[]
+  events    Event[]
+
+  @@map("users")
+}
+
+// ============================================================
+// VILLAGE INFO (singleton - hanya 1 row)
+// ============================================================
+
+model VillageInfo {
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(200)
+  tagline     String?  @db.VarChar(300)
+  description String?  @db.Text
+  address     String?  @db.Text
+  phone       String?  @db.VarChar(20)
+  email       String?  @db.VarChar(150)
+  logoUrl     String?  @map("logo_url") @db.VarChar(500)
+  bannerUrl   String?  @map("banner_url") @db.VarChar(500)
+  mapEmbed    String?  @map("map_embed") @db.Text
+  // Format: {"instagram": "url", "facebook": "url", "youtube": "url"}
+  socialMedia Json?    @map("social_media")
+  // Format: {"population": 1200, "households": 300, "area_km2": 5.2}
+  statistics  Json?
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("village_info")
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+
+model Category {
+  id        String       @id @default(uuid())
+  name      String       @db.VarChar(100)
+  slug      String       @unique @db.VarChar(100)
+  type      CategoryType
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  // Relations
+  news      News[]
+  umkm      Umkm[]
+  galleries Gallery[]
+
+  @@map("categories")
+}
+
+// ============================================================
+// NEWS & ANNOUNCEMENTS
+// ============================================================
+
+model News {
+  id          String        @id @default(uuid())
+  title       String        @db.VarChar(300)
+  slug        String        @unique @db.VarChar(300)
+  content     String        @db.Text
+  excerpt     String?       @db.VarChar(500)
+  coverImage  String?       @map("cover_image") @db.VarChar(500)
+  status      ContentStatus @default(draft)
+  isPinned    Boolean       @default(false) @map("is_pinned")
+  views       Int           @default(0)
+  publishedAt DateTime?     @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  authorId String? @map("author_id")
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([slug])
+  @@index([publishedAt(sort: Desc)])
+  @@map("news")
+}
+
+// ============================================================
+// UMKM
+// ============================================================
+
+model Umkm {
+  id           String   @id @default(uuid())
+  businessName String   @map("business_name") @db.VarChar(200)
+  ownerName    String   @map("owner_name") @db.VarChar(150)
+  slug         String   @unique @db.VarChar(200)
+  description  String?  @db.Text
+  whatsapp     String?  @db.VarChar(20)
+  address      String?  @db.Text
+  mapsLink     String?  @map("maps_link") @db.VarChar(500)
+  coverImage   String?  @map("cover_image") @db.VarChar(500)
+  isActive     Boolean  @default(true) @map("is_active")
+  isFeatured   Boolean  @default(false) @map("is_featured")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  authorId String? @map("author_id")
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  photos UmkmPhoto[]
+
+  @@index([isActive])
+  @@index([slug])
+  @@map("umkm")
+}
+
+model UmkmPhoto {
+  id         String   @id @default(uuid())
+  photoUrl   String   @map("photo_url") @db.VarChar(500)
+  caption    String?  @db.VarChar(200)
+  orderIndex Int      @default(0) @map("order_index") @db.SmallInt
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  umkmId String @map("umkm_id")
+  umkm   Umkm   @relation(fields: [umkmId], references: [id], onDelete: Cascade)
+
+  @@index([umkmId])
+  @@map("umkm_photos")
+}
+
+// ============================================================
+// GALLERY
+// ============================================================
+
+model Gallery {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(200)
+  description String?  @db.VarChar(500)
+  imageUrl    String   @map("image_url") @db.VarChar(500)
+  isPublished Boolean  @default(true) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  authorId String? @map("author_id")
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([isPublished])
+  @@map("galleries")
+}
+
+// ============================================================
+// EVENTS / KEGIATAN
+// ============================================================
+
+enum EventStatus {
+  upcoming   // Akan datang
+  ongoing    // Sedang berlangsung
+  done       // Selesai
+  cancelled  // Dibatalkan
+}
+
+model Event {
+  id          String      @id @default(uuid())
+  title       String      @db.VarChar(200)
+  description String?     @db.Text
+  location    String?     @db.VarChar(300)
+  startDate   DateTime    @map("start_date")
+  endDate     DateTime?   @map("end_date")
+  startTime   String?     @map("start_time") @db.VarChar(10)  // "08:00"
+  endTime     String?     @map("end_time") @db.VarChar(10)    // "12:00"
+  status      EventStatus @default(upcoming)
+  coverImage  String?     @map("cover_image") @db.VarChar(500)
+  isPublished Boolean     @default(true) @map("is_published")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  authorId String? @map("author_id")
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([startDate])
+  @@index([status])
+  @@map("events")
+}
+
+// ============================================================
+// SETTINGS (key-value store)
+// ============================================================
+
+model Setting {
+  id          String   @id @default(uuid())
+  key         String   @unique @db.VarChar(100)
+  value       String?  @db.Text
+  type        String   @default("string") @db.VarChar(20)
+  description String?  @db.VarChar(300)
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
